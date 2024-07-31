@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "gutsum"
+version = "0.1.0"
+description = ""
+authors = ["Ricardo G. Sousa <ricardo@rsousa.co>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "~3.11"
+dvc = "~3.53.0"
+dvc-gdrive = "~3.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
