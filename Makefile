@@ -1,6 +1,6 @@
 CWD = $(shell pwd)
 
-PROJECTS = news-models-serving/ news-utils/
+PROJECTS = gutsum/
 DOC_PROJECTS = docs
 BIN_PROJECTS = $(PROJECTS)
 export ENABLE_PDF_EXPORT=1
@@ -32,10 +32,6 @@ install install-project-components:
 	for project in $(PROJECTS); do \
 		cd $$project && $(MAKE) install && cd $(CWD) ; \
 	done
-
-run-experiment-standalone: install-project-components
-	@echo "######################### Generating results"
-	python news-models-serving/news/model/news_analyser.py
 
 -%:
 	-@$(MAKE) $*
