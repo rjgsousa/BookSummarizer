@@ -1,0 +1,7 @@
+[core]
+    remote = gdrive
+    autostage = true
+[cache]
+    type = "reflink,copy"
+['remote "gdrive"']
+    url = gdrive://1xWqeaiUqi8KZdcLG_H436pLshQJ7yprX
