@@ -5,7 +5,7 @@ DOC_PROJECTS = docs
 BIN_PROJECTS = $(PROJECTS)
 export ENABLE_PDF_EXPORT=1
 
-default: install-project-components
+default: install
 
 .PHONY: docs
 docs documentation:
@@ -28,10 +28,12 @@ clean: -clean_documentation
 	@find . -iname "__pycache__" -type d | xargs --no-run-if-empty rm -rfv
 	@rm -rfv .tox/
 
-install install-project-components:
-	for project in $(PROJECTS); do \
-		cd $$project && $(MAKE) install && cd $(CWD) ; \
-	done
+dependencies:
+	pip install poetry==1.8.3
+
+install: dependencies
+	POETRY_VIRTUALENVS_CREATE=false poetry install --no-cache --only main -v
+	echo "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4');" > download_nltk_data.py && python download_nltk_data.py && rm download_nltk_data.py
 
 -%:
 	-@$(MAKE) $*

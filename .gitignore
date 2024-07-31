@@ -336,3 +336,5 @@ tools/gulp-tasks/cldr/cldr-data/
 # Husky
 .husky/_
 
+# ignore guttenber downloaded texts
+texts/
