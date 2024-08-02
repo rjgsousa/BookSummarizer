@@ -1,5 +1,3 @@
-import hashlib
-import json
 import logging
 import os
 import re
@@ -7,6 +5,7 @@ import re
 import nltk
 import numpy as np
 import pandas as pd
+import yaml
 from bertopic import BERTopic
 from bertopic.representation import KeyBERTInspired
 from hdbscan import HDBSCAN
@@ -17,6 +16,7 @@ from umap import UMAP
 
 from gutsum.utils.get_gutenberg import get_by_book_id
 from gutsum.utils.io_ops import to_pickle, to_parquet, load_pickle, load_parquet
+from gutsum.utils.hash import get_file_hash
 
 
 def create_embeddings(bks: list, file_path, model="all-MiniLM-L6-v2", just_load=False):
@@ -115,8 +115,8 @@ def preprocess(text):
 
 
 def clean_books(bks: pd.DataFrame) -> pd.DataFrame:
-    bks['book_clean'] = bks['book'].apply(clean_text)
-    bks['sentences'] = bks['book_clean'].apply(nltk.sent_tokenize)
+    bks['book-clean'] = bks['book'].apply(clean_text)
+    bks['sentences'] = bks['book-clean'].apply(nltk.sent_tokenize)
     return bks
 
 
@@ -126,23 +126,22 @@ if __name__ == "__main__":
     data_file_path_prefix = 'data/cache'
     data_processed_file_path_prefix = 'data/processed/'
     models_file_path_prefix = 'models/'
+    cfg_kb_filepath = "config/books_to_process.yaml"
 
-    # books by Austen, Jane
-    # Emma (158), Pride and Prejudice (1342), Sense and Sensibility (161)
-    # Persuasion (105), Northanger Abbey (121), Mansfield Park (141)
-    # Northanger Abbey (121), Lady Susan (946), Love and Freindship and Other Early Works (1212)
-    book_ids = {'list-of-books': [158, 1342, 161, 105, 121, 141, 946, 1212]}
+    with open(cfg_kb_filepath, 'r') as file:
+        books_ids = yaml.safe_load(file)
 
-    data_md5 = hashlib.md5(json.dumps(book_ids, sort_keys=True).encode('utf-8')).hexdigest()
+    data_sha = get_file_hash(str(books_ids))
+    logging.info(f"Data SHA {data_sha}")
 
     # raw file obtained directly from gutenberg catalogue
-    file_path_raw = os.path.join(data_file_path_prefix, f"{data_md5}.parquet")
+    file_path_raw = os.path.join(data_file_path_prefix, f"{data_sha}.parquet")
     # cleaned files
-    file_path_clean = os.path.join(data_processed_file_path_prefix, f"{data_md5}_clean.parquet")
+    file_path_clean = os.path.join(data_processed_file_path_prefix, f"{data_sha}_clean.parquet")
 
     if not os.path.exists(file_path_raw):
         logging.info('Downloading books..')
-        books = get_by_book_id(book_ids['list-of-books'])
+        books = get_by_book_id(books_ids)
         to_parquet(books, file_path_raw)
 
     if not os.path.exists(file_path_clean):
@@ -156,6 +155,6 @@ if __name__ == "__main__":
     analyze_topics(
         data_processed_file_path_prefix,
         models_file_path_prefix,
-        experiment_md5=data_md5,
+        experiment_md5=data_sha,
         bks=books_clean
     )
