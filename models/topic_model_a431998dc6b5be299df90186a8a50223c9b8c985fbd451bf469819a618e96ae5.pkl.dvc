@@ -1,0 +1,6 @@
+outs:
+- md5: 4a5016dd1e5c24742687cd5520ee0c1d.dir
+  size: 4035613
+  nfiles: 5
+  hash: md5
+  path: topic_model_a431998dc6b5be299df90186a8a50223c9b8c985fbd451bf469819a618e96ae5.pkl
