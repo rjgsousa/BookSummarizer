@@ -1,8 +1,12 @@
 import logging
 import os
+import time
 
 import yaml
 from llama_index.core import Document, VectorStoreIndex, Settings, StorageContext, load_index_from_storage
+from llama_index.core.query_engine import RetrieverQueryEngine
+from llama_index.core.response_synthesizers import TreeSummarize
+from llama_index.core.retrievers import VectorIndexRetriever
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.llms.groq import Groq
 from llama_index.readers.web import SimpleWebPageReader
@@ -33,6 +37,7 @@ class BookSummarizer(object):
         """
         self.with_literacy = with_literacy
         self.logger = logger
+
         self.data_path = os.path.join(root_path, "data/processed")
         self.literacy_web_pages = {
             'sparknotes': 'https://www.sparknotes.com/writinghelp/how-to-write-literary-analysis/',
@@ -53,7 +58,8 @@ class BookSummarizer(object):
         logger.info("Setting LLM ...")
         GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-        self.llm = Groq(model="mixtral-8x7b-32768", api_key=GROQ_API_KEY, context_window=32768)
+        self.llm = Groq(model="llama-3.1-70b-versatile", api_key=GROQ_API_KEY, context_window=65536)
+        self.summarizer = TreeSummarize(llm=self.llm, verbose=True)
 
         # todo: replace this to SOTA sentence embedding
         Settings.embed_model = HuggingFaceEmbedding(
@@ -82,7 +88,8 @@ class BookSummarizer(object):
             if frac != 1:
                 self.logger.warning("Setting a fraction of the entire dataset...")
                 books = books.sample(frac=frac, random_state=65535)
-                books_from_booksum = books_from_booksum.sample(frac=frac, random_state=65535)
+                # books_from_booksum = books_from_booksum.sample(frac=frac, random_state=65535)
+                books_from_booksum = books_from_booksum[books_from_booksum['book_id'].str.contains('The Last of the Mohicans')]
 
             for index, record in books.iterrows():
                 text = record['book-clean']
@@ -118,7 +125,16 @@ class BookSummarizer(object):
             self.logger.warning("Loaded.")
 
         # init query engine
-        self.books_engine = books_index.as_query_engine(similarity_top_k=3, llm=self.llm)
+        retriever = VectorIndexRetriever(
+            index=books_index,
+            similarity_top_k=10,
+            verbose=True
+        )
+
+        self.books_engine = RetrieverQueryEngine(
+            retriever=retriever,
+            response_synthesizer=self.summarizer,
+        )
 
     def summarize_given_book_title(self, book_title: str) -> dict:
         """Summarizes an entire book
@@ -151,17 +167,19 @@ class BookSummarizer(object):
         return self._summarize(prompt)
 
     def _summarize(self, prompt):
-        self.logger.warning(f"performing search to prompt: {prompt}")
+        self.logger.debug(f"performing search to prompt: {prompt}")
 
-        base_response = str(self.llm.complete(prompt))
-        reasoning = str(self.books_engine.query(prompt))
+        base_response = str(self.summarizer.get_response("Summarize this text", [prompt]))
+
+        # third-party cooldown
+        time.sleep(60)
+        rag_response = str(self.books_engine.query(prompt))
 
         result = {
             'with-literacy-know-how': self.with_literacy,
             'base-response': base_response,
-            'simple-rag': reasoning
+            'simple-rag': rag_response
         }
-
         print(result)
 
         return result
@@ -169,7 +187,7 @@ class BookSummarizer(object):
 
 if __name__ == "__main__":
     sum_logger = logging.getLogger()
-    sum_logger.setLevel(logging.WARNING)
+    sum_logger.setLevel(logging.DEBUG)
     console_handler = logging.StreamHandler()
     sum_logger.addHandler(console_handler)
 
@@ -180,6 +198,5 @@ if __name__ == "__main__":
         books_cfg_kb_filepath='config/books_to_process.yaml',
         frac=0.1
     )
-    # summary = book_sum.summarize("Emma", "Jane Austen")
     summary = book_sum.summarize_given_book_title("The Last of the Mohicans")
     print(summary)

@@ -88,10 +88,15 @@ class Evaluation:
         )
 
         # just to test in order to avoid rate limit errors
-        books = self.book_sum.booksum[self.book_sum.booksum.chapter_length < 1000]
-        bids = random.sample(books.bid.unique().tolist(), 10)
+        # books = self.book_sum.booksum[self.book_sum.booksum.chapter_length < 1000]
+        # bids = random.sample(books.bid.unique().tolist(), 10)
+        books = self.book_sum.booksum[self.book_sum.booksum['book_id'].str.contains('The Last of the Mohicans')]
+        books = books[books.is_aggregate == False]
+        bids = random.sample(books.index.unique().tolist(), 10)
 
         for item, bid in enumerate(bids):
+            # summary, chapter, book_parquet_ref = \
+            #     self.book_sum.get_booksum_by_bid(bid)
             summary, chapter, book_parquet_ref = \
                 self.book_sum.get_booksum_by_index(bid)
 

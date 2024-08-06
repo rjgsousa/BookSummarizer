@@ -24,7 +24,17 @@ class BookSumDataSetIO:
 
         return bid, summary, chapter, book_parquet_ref
 
-    def get_booksum_by_index(self, bid):
+    def get_booksum_by_index(self, ix):
+        book = self.booksum.iloc[ix][['bid', 'summary', 'chapter']]
+
+        summary_dict = book['summary']
+        summary = json.loads(summary_dict)['summary']
+
+        chapter = book['chapter']
+
+        return summary, chapter, ix
+
+    def get_booksum_by_bid(self, bid):
         idx = self.booksum[self.booksum['bid'] == bid].iloc[0].name
 
         book = self.booksum.iloc[idx][['bid', 'summary', 'chapter']]
