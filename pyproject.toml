@@ -24,7 +24,10 @@ rouge-score = "~0.1.2"
 streamlit = "~1.37.1"
 fastapi = "~0.112.0"
 uvicorn = "~0.30.5"
-
+## mkdocs dependencies
+mkdocs = "~1.6.0"
+pymdown-extensions = "~10.8.1"
+mkdocs-with-pdf = "~0.9.3"
 
 [tool.poetry.group.dev.dependencies]
 notebook = "~7.2.1"
