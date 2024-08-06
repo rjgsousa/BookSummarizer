@@ -1,43 +1,69 @@
-# Lumenalta: LLM augmentation with Project Gutenberg Catalog
+# A Platform for Books Processing and Summarization
 
-### Objective
-Augment an LLM (large language model) using the Project Gutenberg Catalog to create book summaries.
+This repository offers a ML solution for book summarization and an evaluation framework. To facilitate data and AI services, an API was developed with automated procedures to deploy the service. The provided data is served with [DVC](https://dvc.org/) for a faster reproducibility of the experiments here conducted. In cases where data is unavailable, concise instructions for obtaining it will be provided.
 
-### Important clarifications
-- This test is aiming for the candidate to deliver a simple E2E model and query example, by any means, we are not expecting a production ready solution.
-- As for the sample data from the [Project Gutenberg Catalog](https://www.gutenberg.org/ebooks/offline_catalogs.html#xmlrdf), you do not need to use the whole catalog, as stated on the Data Collection section, you can choose a diverse set of genres and styles, and train your model with a limited selection.
-- You can use the dataset from [HuggingFace](https://huggingface.co/datasets/kmfoda/booksum) to train and test your model.
-- As for the documentation, a simple update to this document with your thought processes, approach, decision making and result analysis will be enough, no formal documentation is expected.
+This project employs [Groq](https://groq.com/) as its Large Language Model (LLM) service, specifically utilizing the Llama (3.1) 70b model for its extensive context  window (128k tokens), accuracy, and strong performance. To use this LLM, you need to configure a token on the GroqCloud platform. While self-hosting LLMs via alternatives like vLLM or ollama is possible, this project does not currently encompass self-hosting options. This is an area we intend to address in the near future. Given the elevated context window of Llama 3.1, we truncated the `context_window` to a lower number to assess the Tree Summarizer performance.
 
 
-### Steps
-1. **Data Collection**: 
-- Download a selection of books from the [Project Gutenberg Catalog](https://www.gutenberg.org/ebooks/offline_catalogs.html#xmlrdf). Choose a diverse set of genres and styles.
-- Preprocess the text (tokenization, removing special characters, etc.).
-2. **Build a RAG pipeline and augment the chosen LLM to produce book summaries**: 
-- Use a pre-trained LLM (e.g., T5, LLaMA 2, etc) as a baseline.
-- Augment the LLM with the collected book data and dataset.
-- Use the following HuggingFace dataset to evaluate your model: [kmfoda/booksum](https://huggingface.co/datasets/kmfoda/booksum)
-- Evaluate the LLM-generated summaries using metrics like ROUGE, BLEU or an alternative of your choosing.
-- Set up a retrieval system to fetch relevant passages from external knowledge bases (e.g., Wikipedia, Project Gutenberg).
-- Combine the retrieved passages with the LLM-generated summaries to enhance book summaries.
-- Implement the RAG pipeline using Hugging Face Transformers or similar libraries.
-- **The augmentation can be done with a small set of passages/articles, there's no need to use a large dataset.**
-3. **Evaluation Metrics**:
-- Compare the RAG-enhanced summaries with the LLM baseline.
-- Assess the quality, coherence, and informativeness of the summaries.
-4. **Documentation and Model Deployment**: 
-- Document the entire process, including model architecture, hyperparameters, and any challenges faced.
-- Deploy the trained model for book summarization.
-- **Optional**: Launch the application through [Streamlit](https://streamlit.io/) or any similar model hosting site.
+### Installation
+It is advisable to use a virtual environment (e.g., [conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html)) to manage the project dependencies.
 
-### Deliverables
-- A document outlining your evaluation process, including dataset details, LLM evaluation approach, RAG metrics, and production readiness considerations.
-- A zip file with the necessary contents to test your model, and an updated README that will contain instructions to test said model.
+Create a conda environment:
+```bash
+conda create -n book-summarization python=3.11
+```
 
-### Bonus (Optional)
-- Explore domain-specific retrieval sources (e.g., literary analysis articles) for better performance.
+Activate the environment:
+```bash
+conda activate book-summarization
+```
 
-### Additional Instructions
-This project is a layout upon which you will build your solution, please update `requirements.txt` with the necessary dependencies.
+As it will be mentioned above, you need to have an environment variable named "GROQ_API_KEY" to leverage Groq. You should proceed as follows:
 
+```bash
+export GROQ_API_KEY=<YOUR-TOKEN>
+```
+
+Finally, you can now install the project:
+```bash
+make install
+```
+
+To run the service, simply type: 
+```bash
+make run
+```
+
+Please allow a few minutes for the system to download any missing data from the repository and load the index. The system will, by default, load the complete index, encompassing both [booksum](https://github.com/salesforce/booksum) and a selection of books from the Gutenberg Project catalog.
+
+### ToDo
+
+Dictionary Access:
+- Current implementation directly accesses dictionary values/keys (by leveraging enumerators or other procedures for safer and more efficient access)
+
+Containerization:
+- Implement Docker to serve the system
+
+Self-Hosted LLM:
+- Explore using a self-hosted LLM, such as vLLM/ray or other alternatives
+
+Logging:
+- Introduce a logging mechanism to track system events and errors 
+
+- System Efficiency:
+Optimize the system to avoid calling the LLM to generate a baseline - simultaneously with the RAG approach (by improving efficiency by streamlining the LLM usage and reducing redundant calls)
+
+RAG Index API:
+- Restructure the API that serves the RAG index (by improving the API design to enhance usability, scalability, and maintainability)
+
+Code Structure and Software Engineering Practices:
+- Refactor the codebase to adhere to good software engineering practices  (suggestion: adopt Domain-Driven Design (DDD) principles, even if loosely, to improve code organization and maintainability)
+
+
+
+### Documentation
+
+For further assessments, check the documentation pages in [docs](docs).
+
+### Author
+- @rjgsousa

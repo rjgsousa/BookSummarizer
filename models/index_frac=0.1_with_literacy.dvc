@@ -1,0 +1,6 @@
+outs:
+- md5: 269004ca7df0bc7c917d5fd5a0abb86f.dir
+  size: 11295296
+  nfiles: 5
+  hash: md5
+  path: index_frac=0.1_with_literacy

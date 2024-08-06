@@ -1,0 +1,6 @@
+outs:
+- md5: e6e9030471f1432c02ddcc5a77914f48.dir
+  size: 990244666
+  nfiles: 5
+  hash: md5
+  path: index_full

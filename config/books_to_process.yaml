@@ -1,0 +1,19 @@
+authors:
+- author: Austen, Jane
+  list-of-books:
+  - title: Emma
+    id: 158
+  - title: Pride and Prejudice
+    id: 1342
+  - title: Sense and Sensibility
+    id: 161
+  - title: Persuasion
+    id: 105
+  - title: Northanger Abbey
+    id: 121
+  - title: Mansfield Park
+    id: 141
+  - title: Lady Susan
+    id: 946
+  - title: Love and Freindship and Other Early Works
+    id: 1212
