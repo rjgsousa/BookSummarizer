@@ -13,5 +13,6 @@ class BookSumIndex:
             logger=self.logger,
             root_path=self.root_path,
             books_cfg_kb_filepath='config/books_to_process.yaml',
-            frac=0.1
+            frac=1,
+            with_literacy=True
         )

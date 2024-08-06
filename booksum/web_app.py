@@ -18,7 +18,7 @@ def main():
 
     if st.button("Summarize"):
         if query:
-            results = book_summary_api({"book": query})
+            results = book_summary_api({"book": query}, given='book-title')
 
             # which result will be displayed to the end user
             if options == 'LLM':
