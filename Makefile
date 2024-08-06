@@ -5,6 +5,10 @@ DOC_PROJECTS = docs
 BIN_PROJECTS = $(PROJECTS)
 export ENABLE_PDF_EXPORT=1
 
+ifndef GROQ_API_KEY
+$(error GROQ_API_KEY is not set. Please set the environment variable GROQ_API_KEY.)
+endif
+
 default: install
 
 .PHONY: docs
@@ -34,6 +38,10 @@ dependencies:
 install: dependencies
 	POETRY_VIRTUALENVS_CREATE=false poetry install --no-cache --only main -v
 	echo "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4');" > download_nltk_data.py && python download_nltk_data.py && rm download_nltk_data.py
+
+run:
+	python booksum/service.py &
+	streamlit run booksum/web_app.py --server.headless true
 
 -%:
 	-@$(MAKE) $*

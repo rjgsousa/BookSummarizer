@@ -1,0 +1,5 @@
+outs:
+- md5: 76ef773c19b6c14710153f49b6bed1e7
+  size: 164677363
+  hash: md5
+  path: booksum.parquet

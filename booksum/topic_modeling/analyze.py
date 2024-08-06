@@ -14,9 +14,9 @@ from nltk.stem import WordNetLemmatizer
 from sentence_transformers import SentenceTransformer
 from umap import UMAP
 
-from gutsum.utils.get_gutenberg import get_by_book_id
-from gutsum.utils.io_ops import to_pickle, to_parquet, load_pickle, load_parquet
-from gutsum.utils.hash import get_file_hash
+from booksum.utils.get_gutenberg import get_by_book_id
+from booksum.utils.io_ops import to_pickle, to_parquet, load_pickle, load_parquet
+from booksum.utils.hash import get_file_hash
 
 
 def create_embeddings(bks: list, file_path, model="all-MiniLM-L6-v2", just_load=False):
