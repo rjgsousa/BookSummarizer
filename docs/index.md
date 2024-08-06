@@ -31,10 +31,10 @@ Lastly, we strongly advocate for the adoption of software engineering best pract
 # Methods
 
 
-## Topic Modelling
+## Topic Modeling
 The first task in the project involved downloading a curated selection of books from the Project Gutenberg Catalog. To streamline the data management and ingestion process, the gutenbergpy package was utilized along with a configuration file available in the [config](../config/books_to_process.yaml) directory.
 
-In terms of pre-processing, the approach taken in this project leveraged the power of transformers, which come equipped with their own tokenizers. As a result, minimal pre-processing was required, with only minor text clean-up procedures applied to ensure the data was in a suitable format for the transformer models. However, it is worth noting that if one wishes to employ previous methodologies for pre-processing, the necessary code and resources can be found in the [booksum/topic_modelling](../booksum/topic_modeling) directory.
+In terms of pre-processing, the approach taken in this project leveraged the power of transformers, which come equipped with their own tokenizers. As a result, minimal pre-processing was required, with only minor text clean-up procedures applied to ensure the data was in a suitable format for the transformer models. However, it is worth noting that if one wishes to employ previous methodologies for pre-processing, the necessary code and resources can be found in the [booksum/topic_modeling](../booksum/topic_modeling) directory.
 
 To further enhance the understanding of the downloaded dataset, topic modeling was performed using the [BERTopic](https://maartengr.github.io/BERTopic/index.html) library. This additional step aimed to uncover the underlying themes and topics present in the selected books.
 
