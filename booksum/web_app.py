@@ -1,19 +1,6 @@
-import requests
 import streamlit as st
 
-_api_url = "http://localhost:8001/summarize/"
-
-
-def book_summary_api(api_url, data=None):
-    # make request
-    response = requests.post(api_url, json=data)
-
-    if response.status_code == 200:
-        return response.json()
-    else:
-        st.error(f"Error {response.status_code}: {response.text}")
-        return None
-
+from booksum.utils.service_utils import book_summary_api
 
 def main():
 
@@ -31,7 +18,7 @@ def main():
 
     if st.button("Summarize"):
         if query:
-            results = book_summary_api(_api_url, {"book": query})
+            results = book_summary_api({"book": query})
 
             # which result will be displayed to the end user
             if options == 'LLM':
