@@ -34,6 +34,7 @@ clean: -clean_documentation
 
 dependencies:
 	pip install poetry==1.8.3
+	dvc pull
 
 install: dependencies
 	POETRY_VIRTUALENVS_CREATE=false poetry install --no-cache --only main -v
