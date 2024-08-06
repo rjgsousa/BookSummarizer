@@ -2,7 +2,7 @@
 
 This repository offers a ML solution for book summarization and an evaluation framework. To facilitate data and AI services, an API was developed with automated procedures to deploy the service. The provided data is served with [DVC](https://dvc.org/) for a faster reproducibility of the experiments here conducted. In cases where data is unavailable, concise instructions for obtaining it will be provided.
 
-This project employs [Groq](https://groq.com/) as its Large Language Model (LLM) service, specifically utilizing the Mixtral, MoE, 8x7b model for its extensive context  window (32768 tokens), accuracy, and strong performance. To use this LLM, you need to configure a token on the [GroqCloud](https://console.groq.com/) platform. While self-hosting LLMs via alternatives like vLLM or ollama is possible, this project does not currently encompass self-hosting options. This is an area we intend to address in the near future.
+This project employs [Groq](https://groq.com/) as its Large Language Model (LLM) service, specifically utilizing the Llama (3.1) 70b model for its extensive context  window (128k tokens), accuracy, and strong performance. To use this LLM, you need to configure a token on the [GroqCloud](https://console.groq.com/) platform. While self-hosting LLMs via alternatives like vLLM or ollama is possible, this project does not currently encompass self-hosting options. This is an area we intend to address in the near future. Given the elevated context window of Llama 3.1, we truncated the context_window to assess the Tree Summarizer performance.
 
 ## Improvements
 
@@ -42,7 +42,7 @@ To present the findings of the topic modeling analysis, a dedicated notebook was
 
 ## Book Summary Generation
 
-For the second task, I leveraged the powerful Mixtral 8x7b model, which boasts an extensive context window of 32,768 tokens. This expansive context window was efficiently utilized by the LLM serving infrastructure provided by [Groq](https://groq.com/. To further enhance the capabilities of the chosen LLM, I integrated the [llamaindex](https://www.llamaindex.ai/) library. The llamaindex library was selected for its ability to efficiently index and retrieve relevant information from large text corpora, making it an ideal choice for the retrieval augmented generation (RAG) pipeline.
+For the second task, I leveraged the powerful Llama (3.1) 70b model, which boasts an extensive context window of 128k tokens. This expansive context window was efficiently utilized by the LLM serving infrastructure provided by [Groq](https://groq.com/. To further enhance the capabilities of the chosen LLM, I integrated the [llamaindex](https://www.llamaindex.ai/) library. The llamaindex library was selected for its ability to efficiently index and retrieve relevant information from large text corpora, making it an ideal choice for the retrieval augmented generation (RAG) pipeline. Given the elevated context window of Llama 3.1, we truncated the `context_window` to a lower number to assess the Tree Summarizer performance.
 
 To enable the RAG capabilities, I used a diverse collection of books: the Gutenberg Catalogue, which offers a wide range of public domain books, and the [Booksum](https://github.com/salesforce/booksum) dataset, which includes a subset of the Gutenberg books. The NLTK package also provided a small subset of books of this catalogue, but it was not used.
 

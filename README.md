@@ -2,7 +2,7 @@
 
 This repository offers a ML solution for book summarization and an evaluation framework. To facilitate data and AI services, an API was developed with automated procedures to deploy the service. The provided data is served with [DVC](https://dvc.org/) for a faster reproducibility of the experiments here conducted. In cases where data is unavailable, concise instructions for obtaining it will be provided.
 
-This project employs [Groq](https://groq.com/) as its Large Language Model (LLM) service, specifically utilizing the Mixtral MoE 8x7b model for its extensive context  window (32768 tokens), accuracy, and strong performance. To use this LLM, you need to configure a token on the GroqCloud platform. While self-hosting LLMs via alternatives like vLLM or ollama is possible, this project does not currently encompass self-hosting options. This is an area we intend to address in the near future.
+This project employs [Groq](https://groq.com/) as its Large Language Model (LLM) service, specifically utilizing the Llama (3.1) 70b model for its extensive context  window (128k tokens), accuracy, and strong performance. To use this LLM, you need to configure a token on the GroqCloud platform. While self-hosting LLMs via alternatives like vLLM or ollama is possible, this project does not currently encompass self-hosting options. This is an area we intend to address in the near future. Given the elevated context window of Llama 3.1, we truncated the `context_window` to a lower number to assess the Tree Summarizer performance.
 
 
 ### Installation
