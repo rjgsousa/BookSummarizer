@@ -32,7 +32,7 @@ Lastly, we strongly advocate for the adoption of software engineering best pract
 
 
 ## Topic Modeling
-The first task in the project involved downloading a curated selection of books from the Project Gutenberg Catalog. To streamline the data management and ingestion process, the gutenbergpy package was utilized along with a configuration file available in the [config](../config/books_to_process.yaml) directory.
+The first task in the project involved downloading a curated selection of books from the Project Gutenberg Catalog. To streamline the data management and ingestion process, the `gutenbergpy` package was utilized along with a configuration file available in the [config](../config/books_to_process.yaml) directory.
 
 In terms of pre-processing, the approach taken in this project leveraged the power of transformers, which come equipped with their own tokenizers. As a result, minimal pre-processing was required, with only minor text clean-up procedures applied to ensure the data was in a suitable format for the transformer models. However, it is worth noting that if one wishes to employ previous methodologies for pre-processing, the necessary code and resources can be found in the [booksum/topic_modeling](../booksum/topic_modeling) directory.
 
@@ -42,7 +42,7 @@ To present the findings of the topic modeling analysis, a dedicated notebook was
 
 ## Book Summary Generation
 
-For the second task, I leveraged the powerful Llama (3.1) 70b model, which boasts an extensive context window of 128k tokens. This expansive context window was efficiently utilized by the LLM serving infrastructure provided by [Groq](https://groq.com/. To further enhance the capabilities of the chosen LLM, I integrated the [llamaindex](https://www.llamaindex.ai/) library. The llamaindex library was selected for its ability to efficiently index and retrieve relevant information from large text corpora, making it an ideal choice for the retrieval augmented generation (RAG) pipeline. Given the elevated context window of Llama 3.1, we truncated the `context_window` to a lower number to assess the Tree Summarizer performance.
+For the second task, I leveraged the powerful Llama (3.1) 70b model, which boasts an extensive context window of 128k tokens. This expansive context window was efficiently utilized by the LLM serving infrastructure provided by [Groq](https://groq.com/). To further enhance the capabilities of the chosen LLM, I integrated the [llamaindex](https://www.llamaindex.ai/) library. The llamaindex library was selected for its ability to efficiently index and retrieve relevant information from large text corpora, making it an ideal choice for the retrieval augmented generation (RAG) pipeline. Given the elevated context window of Llama 3.1, we truncated the `context_window` to a lower number to assess the Tree Summarizer performance.
 
 To enable the RAG capabilities, I used a diverse collection of books: the Gutenberg Catalogue, which offers a wide range of public domain books, and the [Booksum](https://github.com/salesforce/booksum) dataset, which includes a subset of the Gutenberg books. The NLTK package also provided a small subset of books of this catalogue, but it was not used.
 
