@@ -126,5 +126,6 @@ if __name__ == "__main__":
 
     eval_book_summary = Evaluation(logger=sum_logger, data_path='../../data/processed')
     eval_book_summary.evaluate_random_batch()
-    eval_book_summary._calc_metrics_batch('metrics_snapshot.parquet')
+    # ignore the below as it just a local test
+    eval_book_summary._calc_metrics_batch('metrics_snapshot.parquet')  # noqa
 

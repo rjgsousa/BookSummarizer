@@ -1,7 +1,7 @@
 booksum_service:
   booksum:
     api_env: "prod"
-    api_version: "0.0.1-rc.2"
+    api_version: "0.1.0"
     api_description: "Book Summarizer - Index."
     api_title: "Book Sumarizer - Index."
     docs_url: "/docs"
